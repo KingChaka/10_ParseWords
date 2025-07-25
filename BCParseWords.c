@@ -61,22 +61,20 @@ int main()
  *                  const short int READERR     - CONSTANT; main() error code for failure to open file.
  *                  const short int NOERR       - CONSTANT; main() error code for no errors.
  *
- *                  char word[ ]                - cString to hold parsed word
+ *                  char word[ ]                - c-String to hold parsed word
  *                  char lowerChar              - case corrected character read from the file
  *                  char readChar               - character read from the file
  *
- *                  short int rtnCode           - variable holding the
+ *                  short int rtnCode           - variable holding the current error codes for main()
  *                  short int index             - used to index the 'word' string (character array)
  *
  *                  bool isDelimiter            - indicates if the current character is whitespace
  *                  bool isSkippable            - indicates if the current character is punctuation
  *                  bool isValid                - indicates if the current character is a letter
  *                  bool isEnd                  - indicates if at the end of the file stream
- *                  bool debug
+ *                  bool debug                  - Used to enable debug prints to console
  *
  *                  FILE *sourceFile            - pointer to the file being read
- *
- *                  bool debug                  - Used to add more prints to console for debugging
  *
  * Functions:       clearScreen(void)           - used to clear the prompt; cross-platform
  *
@@ -188,7 +186,7 @@ NEXT:
             printf("%s\n",word);
         }                                                   // End of isEnd condition
     }                                                       // End of do-while block
-    while(isEnd == false);                                  // do while conditional
+    while(isEnd == false);                                  // do-while conditional
 
     fclose(sourceFile);
 
