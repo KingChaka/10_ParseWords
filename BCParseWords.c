@@ -84,7 +84,7 @@ int main()
  *
  * Modifications:   None
  *
- * Special notes:   word size is limited to 20 characters.
+ * Special notes:   word size is limited to 20 characters. Numbers are ignored.
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  */
 
@@ -142,7 +142,7 @@ NEXT:
 
         if(debug)
         {
-            printf("%c-",lowerChar);
+            printf("[%c]",lowerChar);
             if(isDelimiter)
             {
                 printf("\n");
