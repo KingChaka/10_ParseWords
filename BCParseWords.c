@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#define WRD_SIZE_LIMIT 20									// here so word[] can be initialized w/ a variable with gcc compiler
+
 /*
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Purpose:  Clear the screen in either Windows or Unix
@@ -88,27 +90,29 @@ int main()
  */
 
     /* CONSTANTS*/
-    const char FILENAME[]   = "FinalExamTextToParse.txt";
-    const char DASH = '-';
-    const char APOSTRO = 39;
-    const short int READERR = 1;
-    const short int NOERR   = 0;
+    const char FILENAME[] = "FinalExamTextToParse.txt";
+	const char END_OF_STR = '\0';
+	const char NBSP = 160;									// "non-breaking space"; whitespace not recognized by isspace().
+	
+    const short int READERR  = 1;
+    const short int NOERR    = 0;
     
 
     /* VARIABLES */
-    char word[20] = {{}};
-    char readChar = '\0';
+    char word[WRD_SIZE_LIMIT + 1] = { };
+    char lowerChar = END_OF_STR;
+	char readChar = END_OF_STR;
         
-    short int rtnCode = 0;
+    short int rtnCode = NOERR;
     short int index = 0;
     
-    bool isEnd = false;
 	bool isDelimiter = false; 
-	bool isValid = false;
     bool isSkippable = false;
-
-    bool debug = false;
-    
+	bool isValid = false;
+    bool isEnd = false;
+	bool debug = false;
+		// bool debug = true;
+	
     FILE *sourceFile;
 
 
@@ -128,31 +132,47 @@ int main()
     do
     {
 
-SKIPPED:
+NEXT:
         readChar = fgetc(sourceFile);
-        readChar = tolower(readChar);
-        isEnd = (readChar == EOF);
-		isDelimiter = isspace(readChar); 
-		isValid = isalpha(readChar);
-        isSkippable = ispunct(readChar);
+        lowerChar = tolower(readChar);
         
-        if(isValid)
+		isEnd = (lowerChar == EOF);
+		isDelimiter = isspace(lowerChar) || (lowerChar == NBSP); 
+		isValid = isalpha(lowerChar);
+        isSkippable = ispunct(lowerChar);
+        
+        if(debug)
+		{
+			printf("%c-",lowerChar);
+			if(isDelimiter)
+			{
+				printf("\n");
+			}
+		}
+		
+		if(isValid)
         {
-            word[index++] = readChar;
+            word[index++] = lowerChar;
         }
         
         if(isSkippable)
         {
-            goto SKIPPED;
+            goto NEXT;
         }
         
         if(isDelimiter)
 		{
 			word[index] = '\0';
 			printf("%s\n",word);
-			index = 0;
 			
-			for(short int i =0; i<10;i++)
+			if(debug)
+			{
+				printf("\n");
+
+			}
+			
+			index = 0;
+			for(short int i = 0; i < (WRD_SIZE_LIMIT + 1); i++)
 			{
 				word[i]='\0';
 			}
@@ -164,13 +184,13 @@ SKIPPED:
 			printf("%s\n",word);
 		}
         
-    }                                                       // End of file-to-array
+    }                                              			// End of file-to-array
     while(isEnd == false);
     
     fclose(sourceFile);
 
 EOP:
-    return (NOERR);
-}                                                                               // End of main()
+    return (rtnCode);
+}                                     						// End of main()
 
 
