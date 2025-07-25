@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define WRD_SIZE_LIMIT 20                                   // here so word[] can be initialized w/ a variable with gcc compiler
+#define WRD_SIZE_LIMIT 20                                   // here so word[] can be initialized w/ a variable when using gcc compiler
 
 /*
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -84,7 +84,7 @@ int main()
  *
  * Modifications:   None
  *
- * Special notes:   None
+ * Special notes:   word size is limited to 20 characters.
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  */
 
@@ -146,45 +146,44 @@ NEXT:
             if(isDelimiter)
             {
                 printf("\n");
-            }
-        }
+            }                                               // close if in debug: newline for new word
+        }                                                   // close debug statement
 
         if(isValid)
         {
             word[index++] = lowerChar;
-        }
+        }                                                   // close isValid condition
 
         if(isSkippable)
         {
             goto NEXT;
-        }
+        }                                                   // close isSkippable (punctuation) condition
 
         if(isDelimiter)
         {
-            word[index] = '\0';
+            word[index] = END_OF_STR;
             printf("%s\n",word);
 
             if(debug)
             {
                 printf("\n");
 
-            }
+            }                                               // close debug statement
 
             index = 0;
             for(short int i = 0; i < (WRD_SIZE_LIMIT + 1); i++)
             {
-                word[i]='\0';
-            }
-        }
+                word[i] = END_OF_STR;
+            }                                               // close add end of string char code
+        }                                                   // close isDelimitter condition
 
         if(isEnd)
         {
-            word[index++] = '\0';
+            word[index] = END_OF_STR;
             printf("%s\n",word);
-        }
-
-    }                                                       // End of file-to-array
-    while(isEnd == false);
+        }                                                   // End of isEnd condition
+    }                                                       // End of do-while block
+    while(isEnd == false);                                  // do while conditional
 
     fclose(sourceFile);
 
