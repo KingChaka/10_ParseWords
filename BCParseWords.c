@@ -161,6 +161,11 @@ NEXT:
 
         if(isDelimiter)
         {
+            if(index == 0)
+            {
+                goto NEXT;
+            }                                               // closes repeated delimiters condition
+
             word[index] = END_OF_STR;
             printf("%s\n",word);
 
