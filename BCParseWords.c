@@ -130,7 +130,7 @@ int main()
 
 SKIPPED:
         readChar = fgetc(sourceFile);
-        
+        readChar = tolower(readChar);
         isEnd = (readChar == EOF);
 		isDelimiter = isspace(readChar); 
 		isValid = isalpha(readChar);
@@ -146,9 +146,9 @@ SKIPPED:
             goto SKIPPED;
         }
         
-        if(isDelimiter && index > 0)
+        if(isDelimiter)
 		{
-			word[index++] = readChar;
+			word[index] = '\0';
 			printf("%s\n",word);
 			index = 0;
 			
