@@ -47,43 +47,42 @@ int main()
 {
 /*
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Purpose:         This program prompts for a number of students to be organized into groups.
- *                  These students, numbered  1 to n, will be randomly assigned into groups of 3,
- *                  with no group have having more than 3 or fewer than 2 students.
+ * Purpose:         This program takes an ascii text file and prints each word to its own line,
+ *                  less any punctuation or numbers.
  *
- *                  The groups and each member will then be display at the terminal.
- *
- * Program name:    BCAssignGroups.c
+ * Program name:    BCParseWords.c
  *
  * Invocation:      ./a.out on Unix/Linux/MacOS
  *                    a.exe on Windows
  *
- * Variables:       const short int MAX_GRPS    - CONSTANT; the max number of groups allowed
- *                  const short int GRP_SIZE    - CONSTANT; the max number of group members allowed
- *                  const short int LOOP_MIN    - CONSTANT; used to control the number of loops
- *                  const short int GRP_COL     - CONSTANT; 2D array's column index for group number
- *                  const short int ATMPTS      - CONSTANT; used to limit user imputs attempts
- *                  const short int NOERR       - CONSTANT; main() return value; 0 is no errors
+ * Variables:       const char FILENAME[]       - CONSTANT; the file to be parse
+ *                  const char END_OF_STR       - CONSTANT; null character signifying the end of a string
+ *                  const char NBSP             - CONSTANT; "non-breaking space" character; not recognized by isspace().
+ *                  const short int READERR     - CONSTANT; main() error code for failure to open file.
+ *                  const short int NOERR       - CONSTANT; main() error code for no errors.
  *
- *                  short int Groups[][]        - 2D array for holding group and student numbers
- *                  short int RandomNum         - A number generated psuedo-randomly
- *                  short int baseLoop          - Corresponds to number of groups not needing special arrangement
- *                  short int grpType           - Determines display arrangement for the last two groups
- *                  short int Snum              - The number of students being grouped
- *                  short int Oops              - The current number of failed user inputs
+ *                  char word[ ]                - cString to hold parsed word
+ *                  char lowerChar              - case corrected character read from the file
+ *                  char readChar               - character read from the file
  *
- *                  bool UsedNum[]              - Tracks which student numbers are used to avoid repeats
+ *                  short int rtnCode           - variable holding the
+ *                  short int index             - used to index the 'word' string (character array)
+ *
+ *                  bool isDelimiter            - indicates if the current character is whitespace
+ *                  bool isSkippable            - indicates if the current character is punctuation
+ *                  bool isValid                - indicates if the current character is a letter
+ *                  bool isEnd                  - indicates if at the end of the file stream
+ *                  bool debug
+ *
+ *                  FILE *sourceFile            - pointer to the file being read
+ *
  *                  bool debug                  - Used to add more prints to console for debugging
  *
- * Functions:   GenUniqRanNum(min, max, arr[])  - used to generate random numbers w/o repeats
+ * Functions:       clearScreen(void)           - used to clear the prompt; cross-platform
  *
- * Written by:      Doc G.  3/20/23
+ * Written by:      Brandon Crenshaw  25-Jul-2025
  *
- * Modifications:   Added print of current time                                 8/5/23  Doc
- *                  Cleaned up some messy code                                  5/20/25  Doc
- *                  Deleted print of current time and many other comments       Brandon Crenshaw  7/24/2025
- *                  Turned existing prints into debug statements                Brandon Crenshaw  7/24/2025
- *                  Added display code for the randomly generated data          Brandon Crenshaw  7/24/2025
+ * Modifications:   None
  *
  * Special notes:   None
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -116,7 +115,7 @@ int main()
     FILE *sourceFile;
 
 
-    /* LOAD FILE TO MEMORY * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
     clearScreen();
     sourceFile = fopen(FILENAME, "r");
 
