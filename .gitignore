@@ -1,0 +1,5 @@
+*
+
+!.gitignore
+!BCParseWords.c
+!FinalExamTextToParse.txt
